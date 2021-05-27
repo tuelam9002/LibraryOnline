@@ -1,0 +1,227 @@
+﻿@using LibraryOnline.Models.EF;
+@using LibraryOnline.Models.DTO
+@{
+    var document = ViewBag.Document as Document;
+    ViewBag.Title = document.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var category = ViewBag.Category as Category;
+    var user = Session["user"] as User;
+    var listFeedback = ViewBag.Feedback as List<FeedbackDTO>;
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="breadcrumbs">
+                <ul class="flex flex-wrap align-items-center p-0 m-0">
+                    <li><a href="/"><i class="fa fa-home"></i> Trang chủ</a></li>
+                    <li><a href="#"><i class="fa fa-file"></i> @category.Name</a></li>
+                    <li>@document.Name</li>
+                </ul>
+            </div>
+            <!-- .breadcrumbs -->
+        </div>
+        <!-- .col -->
+    </div>
+    <!-- .row -->
+</div>
+<!-- .container -->
+
+<section class="about-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-6 align-content-lg-stretch">
+                <header class="heading">
+                    <h2 class="entry-title">@document.Name</h2>
+                </header>
+                <!-- .heading -->
+
+                <div class="entry-content ezuca-stats">
+                    <div class="stats-wrap flex flex-wrap justify-content-lg-between detail-document">
+                        <ul>
+                            <li><span>Tác giả:</span> <a href=""> @document.PostBy</a></li>
+                            <li><span>Ngày đăng:</span>@document.DatePost.Value.ToString("dd-MM-yyyy hh:mm:ss")</li>
+                            <li><span>Loại tài liệu:</span>@category.Name</li>
+                            <li><span>Môn:</span>@document.Subject.Name</li>
+                            <li><span>Điểm đánh giá:</span>@document.Point</li>
+                            <li><span>Dung lượng:</span>@(document.Size /1024) KB</li>
+                            <li><span>Lượt xem:</span>@document.ViewRate</li>
+                            <li><span>Tải xuống:</span>@document.DownRate</li>
+
+                        </ul>
+                    </div>
+
+                    <div class="stats-wrap flex flex-wrap justify-content-lg-between detail-document">
+                        <a href="/Document/DownloadFile/@document.ID" class="btn btn-lg btn-primary"><i class="fa fa-download"></i> Tải xuống</a>
+                        @*<button class="btn btn-lg btn-info"><i class="fa fa-eye"></i> Xem</button>*@
+                        @*<button class="btn btn-lg btn-success" id="share"><i class="fa fa-share"></i> Chia sẻ</button>*@
+                    </div>
+                    <!-- .stats-wrap -->
+                    @*<div style="margin-top: 15px;">
+                        <div class="col-lg-12 form-group input-group" id="linkShare" style="display: none;">
+                            <input type="text" value="link" class="form-control">
+                            <span class="input-group-addon"><i class="fa fa-copy"></i></span>
+                        </div>
+                    </div>*@
+                </div>
+                <!-- .ezuca-stats -->
+            </div>
+            <!-- .col -->
+
+            <div class="col-12 col-lg-6 flex align-content-center mt-5 mt-lg-0">
+                <div class="ezuca-video position-relative">
+                    @if (document.ExtensionFile.Trim() == ".doc" || document.ExtensionFile.Trim() == ".docx")
+                    {
+                        <iframe src="/Document/GetDoc/@document.ID" width="540px" height="532px"></iframe>
+                    }
+                    else if (document.ExtensionFile.Trim() == ".pdf")
+                    {
+                        <iframe src="/Document/GetPDF/@document.ID" width="540px" height="532px"></iframe>
+                    }
+                    else if (document.ExtensionFile.Trim() == ".ppt" || document.ExtensionFile.Trim() == ".pptx")
+                    {
+                        <iframe src="/Document/GetPowerPoint/@document.ID" width="540px" height="532px"></iframe>
+                    }
+                </div>
+                <!-- .ezuca-video -->
+            </div>
+            <!-- .col -->
+        </div>
+        <!-- .row -->
+    </div>
+    <!-- .container -->
+</section>
+<!-- .about-section -->
+
+<div class="container">
+    <div class="row justify-content-between">
+
+        <div class="col-12 col-lg-6">
+            <div class="contact-form">
+                <h3>Đánh giá của bạn</h3>
+                @if (user != null)
+                {
+                    <form>
+                        <div class="row">
+                            <h5 style="margin-left: 15px;">Điểm đánh giá</h5>
+                            <div class="col-lg-5" style="color: gold; font-size: 12px; margin-bottom: 10px;">
+                                <input type="hidden" id="point_review" class="rating" data-filled="fa fa-star fa-3x" data-empty="fa fa-star-o fa-3x" data-start="5" data-stop="10" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h5 style="margin-left: 15px;">Đánh giá của bạn:</h5>
+                        </div>
+                        <textarea name="" rows="4" placeholder="Nhập đánh giá của bạn..." id="text_review" required></textarea>
+                        <button type="button" class="btn btn-default pull-right" id="btn-review" data-userid="@user.ID">
+                            Gửi đánh giá
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <p>Bạn vui lòng đăng nhập để đánh giá tài liệu này.</p>
+                    <a href="/User/Login" id="btnLogin" class="btn btn-lg btn-success">Đăng nhập</a>
+                }
+
+            </div>
+            <!-- .contact-form -->
+        </div>
+        <!-- .col -->
+
+        <div class="col-12 col-lg-6">
+            <div class="contact-info">
+                <h3>Các đánh giá </h3>
+
+                @if (listFeedback.Count > 0)
+                {
+                    foreach (var item in listFeedback)
+                    {
+                        <ul class="p-0 m-0">
+                            <li><span><i class="fa fa-user"></i></span>@item.User_Name</li>
+                            <li><span><i class="fa fa-clock-o"></i></span>@item.CreatedDate.Value.ToString("hh:mm tt")</li>
+                            <li><span><i class="fa fa-calendar-o"></i></span>@item.CreatedDate.Value.ToString("dd-MM-yyyy")</li>
+                        </ul>
+                        <div class="row">
+                            <div class="col-lg-5" style="color: gold; font-size:5px">
+                                <input type="hidden" value="@item.Point" class="rating" data-filled="fa fa-star fa-3x" data-empty="fa fa-star-o fa-3x" data-start="5" data-stop="10" disabled />
+                            </div>
+                        </div>
+                        <p>@item.Content </p>
+                    }
+                }
+                else
+                {
+                    <p>Tài liệu chưa được đánh giá. </p>
+                }
+
+
+            </div>
+            <!-- .contact-info -->
+        </div>
+        <!-- .col -->
+    </div>
+    <!-- .row -->
+</div>
+<!-- .container -->
+
+@section jsSection{
+    <script src="~/Assets/Client/js/rating.js"></script>
+    <script>
+
+        $('.rating').on('change', function () {
+            // $(this).next('.label').text($(this).val());
+            // alert($(this).val());
+            $('#point_review').val($(this).val());
+        });
+
+        //$('#share').click(function () {
+        //    $('#linkShare').removeAttr('style');
+        //});
+
+        $(document).ready(function () {
+            $("#btn-review").click(function () {
+                var user_id = $(this).data('userid');
+                var document_id = @document.ID;
+                var content = $('#text_review').val();
+                var rating = $('#point_review').val();
+
+                var json_feedback = [];
+                json_feedback.push({
+                    Content: content,
+                    Point: rating,
+                    User_ID: user_id,
+                    Document_ID: document_id
+                });
+
+                console.log(json_feedback);
+                $.ajax({
+                    url: '/Document/addFeedback',
+                    data: { json_feedback: JSON.stringify(json_feedback) },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status == true) {
+                            window.location.href = "/" + "@document.Metatitle" + "-" + document_id;
+                            PNotify.success({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Đánh giá tài liệu thành công.'
+                            });
+                        } else {
+                            PNotify.error({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Đã có lỗi xảy ra, bạn vui lòng đánh giá tài liệu vào thời gian tới.'
+                            });
+                        }
+
+
+                    }
+                });
+            });
+        });
+
+
+    </script>
+
+}
+

@@ -1,0 +1,77 @@
+﻿@model PagedList.IPagedList<LibraryOnline.Models.DTO.DocumentDTO>
+@using PagedList.Mvc
+@{
+    var obj = ViewBag.Object as LibraryOnline.Models.EF.Object;
+    ViewBag.Title = "Tài liệu cấp " + obj.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="featured-courses vertical-column courses-wrap">
+    <div class="container">
+        <div class="row mx-m-25">
+            <div class="col-12 px-25">
+                <header class="heading flex flex-wrap justify-content-between align-items-center">
+                    <h2 class="entry-title">Tài liệu cấp @obj.Name</h2>
+                </header><!-- .heading -->
+            </div><!-- .col -->
+            @foreach (var item in Model)
+            {
+                var url = item.Metatitle + "-" + item.ID;
+                <div class="col-12 col-md-4 col-lg-2 px-25">
+                    <div class="course-content">
+                        <figure class="course-thumbnail">
+                            @if (item.ExtensionFile.Trim() == ".docx" || item.ExtensionFile.Trim() == ".doc")
+                            {
+                                <a href="@url"><img src="~/Assets/Client/images/word.jpg" alt=""></a>
+                            }
+                            else if (item.ExtensionFile.Trim() == ".pdf")
+                            {
+                                <a href="@url"><img src="~/Assets/Client/images/pdf.png" alt=""></a>
+                            }
+                            else if (item.ExtensionFile.Trim() == ".xls" || item.ExtensionFile.Trim() == ".xlsx")
+                            {
+                                <a href="@url"><img src="~/Assets/Client/images/excel.png" alt=""></a>
+                            }
+                            else if (item.ExtensionFile.Trim() == ".ppt" || item.ExtensionFile.Trim() == ".pptx")
+                            {
+                                <a href="@url"><img src="~/Assets/Client/images/ppt.png" alt=""></a>
+                            }
+                        </figure><!-- .course-thumbnail -->
+
+                        <div class="course-content-wrap">
+                            <header class="entry-header">
+                                <h2 class="entry-title"><a href="@url">@item.Name</a></h2>
+
+                                <div class="entry-meta flex align-items-center font10">
+                                    <div class="course-author"><a href="#">@item.PostBy </a></div>
+                                </div><!-- .course-date -->
+                                <div class="flex align-items-center font10">
+                                    <div class="course-date">@item.DatePost.Value.ToString("dd-MM-yyyy")</div>
+                                </div><!-- .course-date -->
+                                <div class="flex align-items-center font10">
+                                    <div class="course-date">@item.ClassName</div>
+                                </div><!-- .course-date -->
+                            </header><!-- .entry-header -->
+                            @*<footer class="entry-footer flex justify-content-between align-items-center">
+                                <div class="course-ratings flex justify-content-end align-items-center font10">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star-o"></span>
+
+                                    <span class="course-ratings-count">(4 đánh giá)</span>
+                                </div>
+                            </footer>*@<!-- .entry-footer -->
+                        </div><!-- .course-content-wrap -->
+                    </div><!-- .course-content -->
+                </div><!-- .col -->
+            }
+
+
+        </div><!-- .row -->
+        Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("GetDocByCate", new { link = obj.Link, ID = obj.ID, page, pageSize = Model.PageSize }))
+    </div><!-- .container -->
+</section><!-- .courses-wrap -->

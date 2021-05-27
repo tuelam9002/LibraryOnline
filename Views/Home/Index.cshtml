@@ -1,0 +1,232 @@
+﻿
+@using LibraryOnline.Models.EF;
+@using LibraryOnline.Models.DTO;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Trang chủ | Ezuca";
+    var listDocument = ViewBag.ListAllDocument as List<Document>;
+
+    var lstDocment = ViewBag.ListDocument as List<DocumentDTO>;
+    var lstObject = ViewBag.ListObject as List<LibraryOnline.Models.EF.Object>;
+    var lstClass = ViewBag.ListClass as List<Class>;
+}
+
+<section class="featured-courses vertical-column courses-wrap">
+    <div class="container">
+        <div class="row mx-m-25">
+
+            @foreach (var item in listDocument.Take(6))
+            {
+                var url = item.Metatitle + "-" + item.ID;
+                <div class="col-12 col-md-4 col-lg-2 px-25">
+                    <div class="course-content">
+                        <figure class="course-thumbnail">
+                            @if (item.ExtensionFile.Trim() == ".docx" || item.ExtensionFile.Trim() == ".doc")
+                            {
+                                <a href="@url"><img src="~/Assets/Client/images/word.jpg" alt=""></a>
+                            }
+                            else if (item.ExtensionFile.Trim() == ".pdf")
+                            {
+                                <a href="@url"><img src="~/Assets/Client/images/pdf.png" alt=""></a>
+                            }
+                            else if (item.ExtensionFile.Trim() == ".xls" || item.ExtensionFile.Trim() == ".xlsx")
+                            {
+                                <a href="@url"><img src="~/Assets/Client/images/excel.png" alt=""></a>
+                            }
+                            else if (item.ExtensionFile.Trim() == ".ppt" || item.ExtensionFile.Trim() == ".pptx")
+                            {
+                                <a href="@url"><img src="~/Assets/Client/images/ppt.png" alt=""></a>
+                            }
+                        </figure><!-- .course-thumbnail -->
+
+                        <div class="course-content-wrap">
+                            <header class="entry-header">
+                                <h2 class="entry-title"><a href="@url">@item.Name</a></h2>
+
+                                <div class="entry-meta flex align-items-center font10">
+                                    <div class="course-author"><a href="#">@item.PostBy </a></div>
+                                </div><!-- .course-date -->
+                                <div class="flex align-items-center font10">
+                                    <div class="course-date">@item.DatePost.Value.ToString("dd-MM-yyyy")</div>
+                                </div><!-- .course-date -->
+                                <div class="flex align-items-center font10">
+                                    <div class="course-date">@item.Class.Name</div>
+                                </div><!-- .course-date -->
+                            </header><!-- .entry-header -->
+                            @*<footer class="entry-footer flex justify-content-between align-items-center">
+                                    <div class="course-ratings flex justify-content-end align-items-center font10">
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star checked"></span>
+                                        <span class="fa fa-star-o"></span>
+
+                                        <span class="course-ratings-count">(4 đánh giá)</span>
+                                    </div>
+                                </footer>*@<!-- .entry-footer -->
+                        </div><!-- .course-content-wrap -->
+                    </div><!-- .course-content -->
+                </div><!-- .col -->
+            }
+
+
+            @*<div class="col-12 px-25 flex justify-content-center">
+                    <a class="btn" href="#">Xem thêm</a>
+                </div>*@<!-- .col -->
+        </div><!-- .row -->
+    </div><!-- .container -->
+</section><!-- .courses-wrap -->
+
+@foreach (var ktem in lstObject)
+{
+    var url = "/danh-muc/" + ktem.Link.Trim() + "-" + ktem.ID;
+    <section class="featured-courses vertical-column courses-wrap">
+        <div class="container">
+            <div class="row mx-m-25">
+                <div class="col-12 px-25">
+                    <header class="heading flex flex-wrap justify-content-between align-items-center">
+                        <h2 class="entry-title">Tài liệu cấp @ktem.Name</h2>
+
+                        <nav class="courses-menu mt-3 mt-lg-0">
+                            <ul class="flex flex-wrap justify-content-md-end align-items-center">
+                                <li class="active"><a href="@url">Xem tất cả</a></li>
+                            </ul>
+                        </nav><!-- .courses-menu -->
+                    </header><!-- .heading -->
+                </div><!-- .col -->
+                @foreach (var jtem in lstClass)
+                {
+                    if (jtem.Object_ID == ktem.ID)
+                    {
+                        foreach (var item in lstDocment)
+                        {
+                            if (item.Class_ID == jtem.ID && item.Object_ID == ktem.ID)
+                            {
+                                var link = item.Metatitle + "-" + item.ID;
+                                <div class="col-12 col-md-4 col-lg-2 px-25">
+                                    <div class="course-content">
+                                        <figure class="course-thumbnail">
+                                            @if (item.ExtensionFile.Trim() == ".docx" || item.ExtensionFile.Trim() == ".doc")
+                                            {
+                                                <a href="@link"><img src="~/Assets/Client/images/word.jpg" alt=""></a>
+                                            }
+                                            else if (item.ExtensionFile.Trim() == ".pdf")
+                                            {
+                                                <a href="@link"><img src="~/Assets/Client/images/pdf.png" alt=""></a>
+                                            }
+                                            else if (item.ExtensionFile.Trim() == ".xls" || item.ExtensionFile.Trim() == ".xlsx")
+                                            {
+                                                <a href="@link"><img src="~/Assets/Client/images/excel.png" alt=""></a>
+                                            }
+                                            else if (item.ExtensionFile.Trim() == ".ppt" || item.ExtensionFile.Trim() == ".pptx")
+                                            {
+                                                <a href="@link"><img src="~/Assets/Client/images/ppt.png" alt=""></a>
+                                            }
+                                        </figure>
+                                        <!-- .
+                            </figure><!-- .course-thumbnail -->
+
+                                        <div class="course-content-wrap">
+                                            <header class="entry-header">
+                                                <h2 class="entry-title"><a href="#">@item.Name</a></h2>
+
+                                                <div class="entry-meta flex align-items-center font10">
+                                                    <div class="course-author"><a href="#">@item.PostBy </a></div>
+                                                </div><!-- .course-date -->
+                                                <div class="flex align-items-center font10">
+                                                    <div class="course-date">@item.DatePost.Value.ToString("dd-MM-yyyy")</div>
+                                                </div><!-- .course-date -->
+                                                <div class="flex align-items-center font10">
+                                                    <div class="course-date">@item.ClassName</div>
+                                                </div><!-- .course-date -->
+                                            </header><!-- .entry-header -->
+                                            @*<footer class="entry-footer flex justify-content-between align-items-center">
+                                        <div class="course-ratings flex justify-content-end align-items-center font10">
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star checked"></span>
+                                            <span class="fa fa-star-o"></span>
+
+                                            <span class="course-ratings-count">(4 đánh giá)</span>
+                                        </div>
+                                    </footer>*@<!-- .entry-footer -->
+                                        </div><!-- .course-content-wrap -->
+                                    </div><!-- .course-content -->
+                                </div><!-- .col -->
+                            }
+
+                        }
+                    }
+
+                }
+
+
+
+            </div><!-- .row -->
+        </div><!-- .container -->
+    </section><!-- .courses-wrap -->
+}
+
+
+
+<div class="icon-boxes">
+    <div class="container-fluid">
+        <div class="flex flex-wrap align-items-stretch">
+            <div class="icon-box">
+                <div class="icon">
+                    <span class="ti-user"></span>
+                </div><!-- .icon -->
+
+                <header class="entry-header">
+                    <h2 class="entry-title">Tài liệu tiểu học</h2>
+                </header><!-- .entry-header -->
+
+                <div class="entry-content">
+                    <p>Bao gồm tất cả các môn học: Tiếng việt (chương trình mới), toán, lịch sử, đạo đức, tiếng Anh,...</p>
+                </div><!-- .entry-content -->
+
+                <footer class="entry-footer read-more">
+                    <a href="/danh-muc/tieu-hoc-1">Xem thêm<i class="fa fa-long-arrow-right"></i></a>
+                </footer><!-- .entry-footer -->
+            </div><!-- .icon-box -->
+
+            <div class="icon-box">
+                <div class="icon">
+                    <span class="ti-folder"></span>
+                </div><!-- .icon -->
+
+                <header class="entry-header">
+                    <h2 class="entry-title">Tài liệu THCS</h2>
+                </header><!-- .entry-header -->
+
+                <div class="entry-content">
+                    <p>Những tài liệu được chọn lọc từ các nguồn uy tín, những giáo sư đầu ngành về giáo dục trung học.</p>
+                </div><!-- .entry-content -->
+
+                <footer class="entry-footer read-more">
+                    <a href="/danh-muc/trung-hoc-co-so-2">Xem thêm<i class="fa fa-long-arrow-right"></i></a>
+                </footer><!-- .entry-footer -->
+            </div><!-- .icon-box -->
+
+            <div class="icon-box">
+                <div class="icon">
+                    <span class="ti-book"></span>
+                </div><!-- .icon -->
+
+                <header class="entry-header">
+                    <h2 class="entry-title">Bài giảng THPT</h2>
+                </header><!-- .entry-header -->
+
+                <div class="entry-content">
+                    <p>Nguồn bài giảng phong phú, có sàng lọc và xét duyệt, sát đề thi thực tế.</p>
+                </div><!-- .entry-content -->
+
+                <footer class="entry-footer read-more">
+                    <a href="/danh-muc/trung-hoc-pho-thong-3">Xem thêm<i class="fa fa-long-arrow-right"></i></a>
+                </footer><!-- .entry-footer -->
+            </div><!-- .icon-box -->
+
+        </div><!-- .row -->
+    </div><!-- .container-fluid -->
+</div><!-- .icon-boxes -->

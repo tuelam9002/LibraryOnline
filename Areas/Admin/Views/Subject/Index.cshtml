@@ -1,0 +1,266 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý tiến độ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int dem_1 = 1, dem_2 = 1, dem_3 = 1;
+    var TieuHoc = ViewBag.TieuHoc as List<LibraryOnline.Models.EF.Subject>;
+    var THCS = ViewBag.THCS as List<LibraryOnline.Models.EF.Subject>;
+    var THPT = ViewBag.THPT as List<LibraryOnline.Models.EF.Subject>;
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Quản lý tiến độ môn học</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert alert-success" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+        @*<div class="row">
+                <div class="col-md-4" style="margin-bottom: 10px">
+                    <a href="/Admin/Product/Add" class="btn btn-lg btn-primary">Thêm mới sản phẩm</a>
+                </div>
+            </div>*@
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Tiểu học
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Môn học</th>
+                                        <th>Số bài giảng</th>
+                                        <th>Số giáo án</th>
+                                        <th>Số đề thi &amp; kiểm tra</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in TieuHoc)
+                                    {
+                                        <tr>
+                                            <td>@dem_1</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.CountLesson</td>
+                                            <td>@item.SumPlan</td>
+                                            <td>@item.CountExam</td>
+                                            <td>
+                                                <button class="btn btn-default btnEdit" data-id="@item.ID"><i class="fa fa-edit" style="padding-right: 5px"></i>Sửa tiến độ</button>
+                                            </td>
+                                        </tr>
+                                        dem_1++;
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Trung học cơ sở
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Môn học</th>
+                                        <th>Số bài giảng</th>
+                                        <th>Số giáo án</th>
+                                        <th>Số đề thi &amp; kiểm tra</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in THPT)
+                                    {
+                                        <tr>
+                                            <td>@dem_2</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.CountLesson</td>
+                                            <td>@item.SumPlan</td>
+                                            <td>@item.CountExam</td>
+                                            <td>
+                                                <button class="btn btn-default btnEdit" data-id="@item.ID"><i class="fa fa-edit" style="padding-right: 5px"></i>Sửa tiến độ</button>
+                                            </td>
+                                        </tr>
+                                        dem_2++;
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Trung học phổ thông
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Môn học</th>
+                                        <th>Số bài giảng</th>
+                                        <th>Số giáo án</th>
+                                        <th>Số đề thi &amp; kiểm tra</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in THPT)
+                                    {
+                                        <tr>
+                                            <td>@dem_3</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.CountLesson</td>
+                                            <td>@item.SumPlan</td>
+                                            <td>@item.CountExam</td>
+                                            <td>
+                                                <button class="btn btn-default btnEdit" data-id="@item.ID"><i class="fa fa-edit" style="padding-right: 5px"></i>Sửa tiến độ</button>
+                                            </td>
+                                        </tr>
+                                        dem_3++;
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade editSubject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sửa yêu cầu tiến độ môn: <span style="color:blue" id="txtSubject"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("editSubject", "Subject", FormMethod.Post))
+                {
+                    <input type="hidden" name="ID" id="ID" />
+                    <div class="col-md-4 form-group">
+                        <label for="recipient-name" class="col-form-label">Số bài giảng:</label>
+                        <input type="number" min="1" name="CountLesson" id="Edit_CountLesson" class="form-control">
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label for="recipient-name" class="col-form-label">Số giáo án:</label>
+                        <input type="number" min="1" name="SumPlan" id="Edit_SumPlan" class="form-control">
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label for="recipient-name" class="col-form-label">Số đề thi & kiểm tra:</label>
+                        <input type="number" min="1" name="CountExam" id="Edit_CountExam" class="form-control">
+                    </div>
+                    
+                    <div class="col-md-12 form-group">
+                        <button type="submit" class="btn btn-primary">Sửa</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section jsAdmin{
+
+    <script type="text/javascript">
+
+        $(function () {
+
+             //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+            $('.btnEdit').click(function(event) {
+                $('.editSubject').modal('show');
+                //alert($(this).data('id'));
+                var ID = $(this).data('id');
+                $.ajax({
+                        url: "/Admin/Subject/GetSubjectByID/" + ID,
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        success: function (res) {
+                            $('#txtSubject').text(res.Name);
+                            $('#Edit_CountLesson').val(res.CountLesson);
+                            $('#Edit_SumPlan').val(res.SumPlan);
+                            $('#Edit_CountExam').val(res.CountExam);
+                            $('#ID').val(res.ID);
+                        }
+                    });
+            });
+
+        });
+
+        
+
+    </script>
+
+}
+
+
+
+
+

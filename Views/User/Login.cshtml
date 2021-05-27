@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- .page-header -->
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="breadcrumbs" style="margin: 0;">
+                <ul class="flex flex-wrap align-items-center p-0 m-0">
+                    <li><a href="/"><i class="fa fa-home"></i> Trang chủ</a></li>
+                    <li>Đăng nhập</li>
+                </ul>
+            </div>
+            <!-- .breadcrumbs -->
+        </div>
+        <!-- .col -->
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+        </div>
+        <!-- .col -->
+        <div class="col-lg-5">
+
+            <div class="sidebar">
+                <div class="col-lg-12">
+                    <h1 class="h3 mb-3 font-weight-normal text-center">Đăng nhập</h1>
+                </div>
+                @if (TempData["error"] != null)
+                {
+                    <div class="col-lg-12 text-center" style="margin-bottom: 20px;">
+                        <span class="alert alert-danger">@TempData["error"]</span>
+                    </div>
+                }
+
+                <div class="col-lg-12">
+                    @using (Html.BeginForm("frmLogin", "User", FormMethod.Post))
+                    {
+                        <div class="col-lg-12 form-group input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <input type="text" class="form-control" name="Account" placeholder="Tài khoản" required>
+                        </div>
+                        <div class="col-lg-12 form-group input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            <input type="password" class="form-control" name="Password" placeholder="Mật khẩu" required>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-lg btn-success btn-block">Đăng nhập</button>
+                        </div>
+                    }
+
+                    <!-- .flex -->
+                </div>
+                <div class="col-lg-12" style="margin-top: 20px;">
+                    Bạn chưa có tài khoản? <a href="/User/Register" style="color: blue;">Đăng ký</a>
+                </div>
+            </div>
+            <!-- .sidebar -->
+        </div>
+        <!-- .col -->
+    </div>
+    <!-- .row -->
+</div>
+

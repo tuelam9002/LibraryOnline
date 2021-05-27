@@ -1,0 +1,305 @@
+﻿@using LibraryOnline.Models.EF;
+@{
+    var sub = ViewBag.Subject as Subject;
+    ViewBag.Title = "Môn: " + sub.Name;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var BaiGiang = ViewBag.BaiGiang as List<Document>;
+    var GiaoAn = ViewBag.GiaoAn as List<Document>;
+    var DeThi = ViewBag.DeThi as List<Document>;
+    int dem_1 = 1, dem_2 = 1, dem_3 = 1;
+}
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Chi tiết tiến độ môn: @sub.Name</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Bài giảng
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tên tài liệu</th>
+                                        <th>Ngày đăng</th>
+                                        <th>Tác giả</th>
+                                        <th>Thuộc danh mục</th>
+                                        <th>Đối tượng</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (BaiGiang != null)
+                                    {
+                                        foreach (var item in BaiGiang)
+                                        {
+                                            <tr>
+                                                <td>@dem_1</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.DatePost.Value.ToString("dd-MM-yyyy")</td>
+                                                <td>@item.PostBy</td>
+                                                <td>@item.Category.Name</td>
+                                                <td>@item.Subject.Name</td>
+                                                <td>
+                                                    @if (item.ExtensionFile.Trim() == ".doc" || item.ExtensionFile.Trim() == ".docx")
+                                                    {
+                                                        <a href="/Document/GetDoc/@item.ID" class="btn btn-primary" target="_blank" title="Xem chi tiết tài liệu"><i class="fa fa-info-circle"></i></a>
+                                                    }
+                                                    else if (item.ExtensionFile.Trim() == ".pdf")
+                                                    {
+                                                        <a href="/Document/GetPDF/@item.ID" class="btn btn-primary" target="_blank" title="Xem chi tiết tài liệu"><i class="fa fa-info-circle"></i></a>
+                                                    }
+                                                    else if (item.ExtensionFile.Trim() == ".ppt" || item.ExtensionFile.Trim() == ".pptx")
+                                                    {
+                                                        <a href="/Document/GetPowerPoint/@item.ID" class="btn btn-primary" target="_blank" title="Xem chi tiết tài liệu"><i class="fa fa-info-circle"></i></a>
+                                                    }
+
+                                                    <button class="btn btn-danger btnDelete" data-id="@item.ID" title="Xóa tài liệu"><i class="fa fa-remove"></i></button>
+                                                </td>
+                                            </tr>
+                                            dem_1++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="7">Chưa có tài liệu</td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Giáo án
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tên tài liệu</th>
+                                        <th>Ngày đăng</th>
+                                        <th>Tác giả</th>
+                                        <th>Thuộc danh mục</th>
+                                        <th>Đối tượng</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (GiaoAn != null)
+                                    {
+                                        foreach (var item in GiaoAn)
+                                        {
+                                            <tr>
+                                                <td>@dem_2</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.DatePost.Value.ToString("dd-MM-yyyy")</td>
+                                                <td>@item.PostBy</td>
+                                                <td>@item.Category.Name</td>
+                                                <td>@item.Subject.Name</td>
+                                                <td>
+                                                    @if (item.ExtensionFile.Trim() == ".doc" || item.ExtensionFile.Trim() == ".docx")
+                                                    {
+                                                        <a href="/Document/GetDoc/@item.ID" class="btn btn-primary" target="_blank" title="Xem chi tiết tài liệu"><i class="fa fa-info-circle"></i></a>
+                                                    }
+                                                    else if (item.ExtensionFile.Trim() == ".pdf")
+                                                    {
+                                                        <a href="/Document/GetPDF/@item.ID" class="btn btn-primary" target="_blank" title="Xem chi tiết tài liệu"><i class="fa fa-info-circle"></i></a>
+                                                    }
+                                                    else if (item.ExtensionFile.Trim() == ".ppt" || item.ExtensionFile.Trim() == ".pptx")
+                                                    {
+                                                        <a href="/Document/GetPowerPoint/@item.ID" class="btn btn-primary" target="_blank" title="Xem chi tiết tài liệu"><i class="fa fa-info-circle"></i></a>
+                                                    }
+
+                                                    <button class="btn btn-danger btnDelete" data-id="@item.ID" title="Xóa tài liệu"><i class="fa fa-remove"></i></button>
+                                                </td>
+                                            </tr>
+                                            dem_2++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="7">Chưa có tài liệu</td>
+                                        </tr>
+                                    }
+                                    
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Đề thi & Kiểm tra
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tên tài liệu</th>
+                                        <th>Ngày đăng</th>
+                                        <th>Tác giả</th>
+                                        <th>Thuộc danh mục</th>
+                                        <th>Môn học</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (DeThi != null)
+                                    {
+                                        foreach (var item in DeThi)
+                                        {
+                                            <tr>
+                                                <td>@dem_3</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.DatePost.Value.ToString("dd-MM-yyyy")</td>
+                                                <td>@item.PostBy</td>
+                                                <td>@item.Category.Name</td>
+                                                <td>@item.Subject.Name</td>
+                                                <td>
+                                                    @if (item.ExtensionFile.Trim() == ".doc" || item.ExtensionFile.Trim() == ".docx")
+                                                    {
+                                                        <a href="/Document/GetDoc/@item.ID" class="btn btn-primary" target="_blank" title="Xem chi tiết tài liệu"><i class="fa fa-info-circle"></i></a>
+                                                    }
+                                                    else if (item.ExtensionFile.Trim() == ".pdf")
+                                                    {
+                                                        <a href="/Document/GetPDF/@item.ID" class="btn btn-primary" target="_blank" title="Xem chi tiết tài liệu"><i class="fa fa-info-circle"></i></a>
+                                                    }
+                                                    else if (item.ExtensionFile.Trim() == ".ppt" || item.ExtensionFile.Trim() == ".pptx")
+                                                    {
+                                                        <a href="/Document/GetPowerPoint/@item.ID" class="btn btn-primary" target="_blank" title="Xem chi tiết tài liệu"><i class="fa fa-info-circle"></i></a>
+                                                    }
+
+                                                    <button class="btn btn-danger btnDelete" data-id="@item.ID" title="Xóa tài liệu"><i class="fa fa-remove"></i></button>
+                                                </td>
+                                            </tr>
+                                            dem_3++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="7">Chưa có tài liệu</td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+@section jsAdmin{
+
+    <script type="text/javascript">
+       $('.btnDelete').off('click').on('click', function () {
+                const notice = PNotify.notice({
+                    title: 'Thông báo',
+                    text: 'Bạn thật sự muốn xóa?',
+                    icon: 'fa fa-question-circle',
+                    width: '360px',
+                    minHeight: '110px',
+                    hide: false,
+                    closer: false,
+                    sticker: false,
+                    destroy: true,
+                    stack: new PNotify.Stack({
+                        dir1: 'down',
+                        modal: true,
+                        firstpos1: 25,
+                        overlayClose: false
+                    }),
+                    modules: new Map([
+                        ...PNotify.defaultModules,
+                        [PNotifyConfirm, {
+                            confirm: true
+                        }]
+                    ])
+                });
+
+                notice.on('pnotify:confirm', () =>
+                    $.ajax({
+                        data: { ID: $(this).data('id') },
+                        url: '/Admin/Document/Delete',
+                        dataType: 'Json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+
+                                window.location.href = "/Admin/Document/Index";
+                                PNotify.success({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa tài liệu thành công.'
+                                });
+                            } else {
+
+                                window.location.href = "/Admin/Document/Index";
+                                PNotify.error({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa tài liệu KHÔNG thành công.'
+                                });
+                            }
+                        }
+                    })
+
+                );
+
+
+            });
+    </script>
+
+}
+
+
+
+
+

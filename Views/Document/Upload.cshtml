@@ -1,0 +1,208 @@
+﻿@using LibraryOnline.Models.EF;
+@{
+    ViewBag.Title = "Đăng tài liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var ListCategory = ViewBag.ListCategory as List<Category>;
+    var ListObject = ViewBag.ListObject as List<LibraryOnline.Models.EF.Object>;
+    var user = Session["user"] as LibraryOnline.Models.EF.User;
+}
+
+<!-- .page-header -->
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumbs" style="margin: 0;">
+                    <ul class="flex flex-wrap align-items-center p-0 m-0">
+                        <li><a href="/"><i class="fa fa-home"></i> Trang chủ</a></li>
+                        <li>Đăng tài liệu</li>
+                    </ul>
+                </div>
+                <!-- .breadcrumbs -->
+            </div>
+            <!-- .col -->
+        </div>
+
+        @if (TempData["add_success"] != null)
+        {
+            <div class="alert alert-success text-center" id="AlertBox">
+                @TempData["add_success"]
+            </div>
+        }
+        <div class="row">
+            <div class="col-lg-2">
+            </div>
+            <!-- .col -->
+            <div class="col-lg-8">
+
+                <div class="sidebar">
+                    <div class="col-lg-12">
+                        <h1 class="h3 mb-3 font-weight-normal text-center">Đăng tài liệu</h1>
+                    </div>
+                    <div class="col-lg-12">
+                        @using (Html.BeginForm("UploadFile", "Document", FormMethod.Post, new { enctype = "multipart/form-data", @class = "flex flex-wrap align-items-center", id = "frmUpload" }))
+                        {
+                            <input type="hidden" name="User_ID" value="@user.ID" />
+                            <input type="hidden" name="PostBy" value="@user.Fullname" />
+                            <div class="col-lg-6 form-group">
+                                <label>Thuộc danh mục</label>
+                                <select name="Category_ID" class="form-control">
+                                    <option value="">---Chọn danh mục---</option>
+                                    @foreach (var item in ListCategory)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label>Thuộc đối tượng</label>
+                                <select name="Object_ID" class="form-control" id="Object_ID">
+                                    <option value="">---Chọn đối tượng---</option>
+                                    @foreach (var item in ListObject)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label>Môn học</label>
+                                <select name="Subject_ID" id="Subject_ID" class="form-control">
+                                    <option value="0">---Chọn môn học---</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-6 form-group">
+                                <label>Thuộc lớp</label>
+                                <select name="Class_ID" id="Class_ID" class="form-control">
+                                    <option value="0">---Chọn lớp---</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-12" style="margin-bottom: 20px;">
+                                <span class="control-fileupload">
+                                    <label for="file">Chọn file tải lên (WORD, PDF, POWERPOINT):</label>
+                                    <input type="file" id="file" name="File" accept="application/pdf,application/msword,application/vnd.ms-powerpoint">
+                                </span>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-lg btn-success btn-block" id="fileUpload">Tải lên</button>
+                            </div>
+                        }
+
+                        <!-- .flex -->
+                    </div>
+
+                </div>
+                <!-- .sidebar -->
+            </div>
+            <!-- .col -->
+        </div>
+        <!-- .row -->
+    </div>
+
+@section jsSection{
+
+    <script>
+
+         //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+        $("#Object_ID").change(function () {
+            var ID = $(this).val();
+            $.ajax({
+                url: '/Document/listSubjectByObject/' + ID,
+                //data: {Object_ID: },
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+                    $("#Subject_ID").empty();
+                    //var def = '<option value="0" selected>Lớp</option>';
+                    //$("#Subject_ID").append(def);
+                    $.each(response, function (i, item) {
+                        var option = "<option value='" + response[i].ID + "'>" + response[i].Name + "</option>";
+
+                        $("#Subject_ID").append(option);
+                    });
+
+                }
+            });
+
+        });
+
+        $("#Object_ID").change(function () {
+            var ID = $(this).val();
+            $.ajax({
+                url: '/Document/listClassByObject/' + ID,
+                //data: {Object_ID: },
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+                    $("#Class_ID").empty();
+                    //var def = '<option value="0" selected>Lớp</option>';
+                    //$("#Subject_ID").append(def);
+                    $.each(response, function (i, item) {
+                        var option = "<option value='" + response[i].ID + "'>" + response[i].Name + "</option>";
+
+                        $("#Class_ID").append(option);
+                    });
+
+                }
+            });
+
+        });
+
+        $(function () {
+            $('input[type=file]').change(function() {
+                var t = $(this).val();
+                var labelText = 'File : ' + t.substr(12, t.length);
+                $(this).prev('label').text(labelText);
+
+                const size = Math.round((this.files[0].size / 1024));
+                var extensionFile = this.files[0].name.split('.').pop()
+                console.log(size);
+                console.log(extensionFile);
+                console.log(this.files[0].length);
+                if (size >= 20480) {
+                    $('button[type=submit]').attr("disabled", true);
+                    alert("File quá lớn. Vui lòng chọn File không vượt quá 20 MB")
+                }
+                else if (extensionFile == "doc" || extensionFile == "docx" || extensionFile == "pdf" || extensionFile == "ppt" || extensionFile == "pptx")
+                {
+                    $('button[type=submit]').attr("disabled", false);
+                }
+                else
+                {
+                    $('button[type=submit]').attr("disabled", true);
+                    alert("Bạn vui lòng chọn File: Word, PDF hoặc POWERPOINT!");
+                }
+            })
+        });
+
+        $(document).ready(function () {
+
+            // add the rule here
+            $.validator.addMethod("select_validate", function (value, element, arg) {
+                return arg !== value;
+            }, "Value must not equal arg.");
+            //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+            $("#frmUpload").validate({
+                rules: {
+                    
+                    Category_ID: { select_validate: "" },
+                    Object_ID: { select_validate: "" }
+                },
+                messages: {
+                    Category_ID:{ select_validate: "Bạn chưa chọn danh mục tài liệu!" },
+                    Object_ID: { select_validate: "Bạn chưa chọn đối tượng!" }
+                }
+            });
+        });
+        
+    </script>    
+    
+}
